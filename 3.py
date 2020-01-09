@@ -71,12 +71,15 @@ class Meteor(pygame.sprite.Sprite):
         self.image = Meteor.image
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
-        self.rect.x = pos2[]
-        self.rect.y = pos2[]
+        self.rect.x = pos2[1280]
+        self.rect.y = pos2[720]
 
     def asteroid(self):
         if count == 1500:
             image = load_image("meteor1.jpg")
+
+
+meteor = Meteor()
 
 
 while running:
@@ -85,6 +88,10 @@ while running:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             Laser(event.pos)
+        if x.pos1[0] and y.pos1[1] == x.pos2[1280] and y.pos2[720]:
+            count += 1
+            image = load_image("boom.png")
+            meteor.pop
     screen.fill((0, 0, 0))
     all_sprites.draw(screen)
     all_sprites.update()
