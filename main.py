@@ -8,6 +8,7 @@ running = True
 count = 0
 screen = pygame.display.set_mode(size)
 screen.fill((255, 255, 255))
+pygame.mouse.set_cursor((8, 8), (0, 0), (0, 0, 0, 0, 0, 0, 0, 0), (0, 0, 0, 0, 0, 0, 0, 0))
 
 
 def load_image(name, color_key=None):
@@ -20,6 +21,21 @@ def load_image(name, color_key=None):
     else:
         image = image.convert_alpha()
     return image
+
+
+class SpaceCraft(pygame.sprite.Sprite):
+    image = load_image('spacecraft.png', -1)
+
+    def __init__(self, group):
+        super().__init__(group_sprites, group)
+        self.image = SpaceCraft.image
+        self.rect = self.image.get_rect()
+
+    def get_event(self, pos):
+        self.update(pos)
+
+    def update(self, coords):
+        self.rect.x, self.rect.y = coords
 
 
 class Space(pygame.sprite.Sprite):
@@ -35,7 +51,9 @@ class Space(pygame.sprite.Sprite):
 
 clock = pygame.time.Clock()
 all_sprites = pygame.sprite.Group()
+group_sprites = pygame.sprite.Group()
 space = Space()
+SpaceCraft(group_sprites)
 
 
 class Laser(pygame.sprite.Sprite):
@@ -67,17 +85,21 @@ class Meteor(pygame.sprite.Sprite):
         self.rect.y = pos2[499]
 
 
-
-
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             Laser(event.pos)
+        if event.type == pygame.MOUSEMOTION:
+            for i in group_sprites:
+                if pygame.mouse.get_focused():
+                    i.get_event(event.pos)
     screen.fill((0, 0, 0))
     all_sprites.draw(screen)
+    group_sprites.draw(screen)
     all_sprites.update()
     pygame.display.flip()
-    clock.tick(100)
+    clock.tick(10000)
+
 pygame.quit()
