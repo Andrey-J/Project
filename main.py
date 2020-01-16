@@ -24,7 +24,7 @@ def load_image(name, color_key=None):
 
 
 class SpaceCraft(pygame.sprite.Sprite):
-    image = load_image('spacecraft.png', -1)
+    image = load_image('spacecraft.png', - 1)
 
     def __init__(self, group):
         super().__init__(group_sprites, group)
@@ -64,18 +64,18 @@ class Laser(pygame.sprite.Sprite):
         self.image = Laser.image
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
-        self.rect.x = pos1[0]
-        self.rect.y = pos1[1]
+        self.rect.x = pos1[0] + 73
+        self.rect.y = pos1[1] - 50
 
     def update(self):
         self.rect = self.rect.move(0, -1)
         if not pygame.sprite.collide_mask(self, space):
             self.rect = self.rect.move(1, 1)
 
-            
+
 class Meteor(pygame.sprite.Sprite):
     image = load_image("meteor.jpg", -1)
-    
+
     def __init__(self, pos2):
         super().__init__(all_sprites)
         self.image = Meteor.image
@@ -87,7 +87,7 @@ class Meteor(pygame.sprite.Sprite):
 
 while running:
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+        if event.type ==  pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             Laser(event.pos)
@@ -100,6 +100,7 @@ while running:
     group_sprites.draw(screen)
     all_sprites.update()
     pygame.display.flip()
+    clock.tick(100)
     clock.tick(10000)
 
 pygame.quit()
