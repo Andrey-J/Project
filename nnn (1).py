@@ -1,6 +1,7 @@
 import pygame
 import os
 import random
+import sys
 
 pygame.init()
 size = x, y = 1280, 720
@@ -38,6 +39,31 @@ class SpaceCraft(pygame.sprite.Sprite):
         self.rect.x, self.rect.y = coords
 
 
+class Menu(pygame.sprite.Sprite):
+    image = load_image('Screen.jpg')
+
+    def __init__(self):
+        super().__init__(menu_pic)
+        self.image = Menu.image
+        self.rect = self.image.get_rect()
+        self.mask = pygame.mask.from_surface(self.image)
+        self.rect.bottom = y
+
+    def menu(self):
+        run = True
+        while run:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    sys.exit()
+                if event.key == pygame.K_SPACE:
+                    run = False
+        menu_pic.draw(screen)
+        pygame.display.flip()
+
+
 class Space(pygame.sprite.Sprite):
     image = load_image("space1.jpg")
 
@@ -51,6 +77,7 @@ class Space(pygame.sprite.Sprite):
 
 clock = pygame.time.Clock()
 all_sprites = pygame.sprite.Group()
+menu_pic = pygame.sprite.Group()
 group_sprites = pygame.sprite.Group()
 space = Space()
 SpaceCraft(group_sprites)
@@ -85,12 +112,18 @@ class Meteor(pygame.sprite.Sprite):
         self.rect.y = pos2[499]
 
 
+start = Menu()
+start.menu()
+
 while running:
     for event in pygame.event.get():
-        if event.type ==  pygame.QUIT:
-            running = False
+        if event.type == pygame.QUIT:
+            sys.exit()
         if event.type == pygame.MOUSEBUTTONDOWN:
             Laser(event.pos)
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                sys.exit()
         if event.type == pygame.MOUSEMOTION:
             for i in group_sprites:
                 if pygame.mouse.get_focused():
