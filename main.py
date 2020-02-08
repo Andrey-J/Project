@@ -24,7 +24,7 @@ def load_image(name, color_key=None):
 
 
 class SpaceCraft(pygame.sprite.Sprite):
-    image = load_image('spacecraft.png', -1)
+    image = load_image('spacecraft.png', - 1)
 
     def __init__(self, group):
         super().__init__(group_sprites, group)
@@ -64,30 +64,44 @@ class Laser(pygame.sprite.Sprite):
         self.image = Laser.image
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
-        self.rect.x = pos1[0]
-        self.rect.y = pos1[1]
+        self.rect.x = pos1[0] + 73
+        self.rect.y = pos1[1] - 50
 
     def update(self):
         self.rect = self.rect.move(0, -1)
         if not pygame.sprite.collide_mask(self, space):
             self.rect = self.rect.move(1, 1)
 
-            
+
 class Meteor(pygame.sprite.Sprite):
     image = load_image("meteor.jpg", -1)
-    
+
     def __init__(self, pos2):
         super().__init__(all_sprites)
         self.image = Meteor.image
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
-        self.rect.x = pos2[499]
-        self.rect.y = pos2[499]
+        self.rect.x = pos2[1280]
+        self.rect.y = pos2[720]
+
+    def fall(self):
+            for i in range(10):
+                (random.random() * x,
+                random.random() * y, 1, 1))
+                
+    def die(self):
+        if pos2[1280] and pos2[720] == pos1[0] + 73 and pos1[1] - 50:
+            os.kill(meteor)
+
+    def update(self):
+        self.rect = self.rect.move(0, 1)
+        if not pygame.sprite.collide_mask(self, space):
+            self.rect = self.rect.move(1, 1)
 
 
 while running:
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+        if event.type ==  pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             Laser(event.pos)
@@ -95,11 +109,14 @@ while running:
             for i in group_sprites:
                 if pygame.mouse.get_focused():
                     i.get_event(event.pos)
+        if pos2[0] and pos2[0]:
+            os.kill(meteor)
     screen.fill((0, 0, 0))
     all_sprites.draw(screen)
     group_sprites.draw(screen)
     all_sprites.update()
     pygame.display.flip()
+    clock.tick(100)
     clock.tick(10000)
 
-pygame.quit()
+pygame.quit() 
