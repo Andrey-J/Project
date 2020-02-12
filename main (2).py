@@ -81,14 +81,18 @@ class Meteor(pygame.sprite.Sprite):
         self.image = Meteor.image
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
-        self.rect.x = pos2[1280]
-        self.rect.y = pos2[720]
-        
+        self.rect.x2 = pos2[1280]
+        self.rect.y2 = pos2[720]
+
     def fall(self):
             for i in range(10):
                 (random.random() * x,
                 random.random() * y, 1, 1))
-    
+                
+    def die(self):
+        if self.rect.x2[1280] and self.rect.y2[720] == self.rect.x[0] + 73 and self.rect.y[1] - 50:
+            os.kill(meteor)
+
     def update(self):
         self.rect = self.rect.move(0, 1)
         if not pygame.sprite.collide_mask(self, space):
@@ -105,6 +109,8 @@ while running:
             for i in group_sprites:
                 if pygame.mouse.get_focused():
                     i.get_event(event.pos)
+        if self.rect.x2[0] and self.rect.y2[0]:
+            os.kill(meteor)
     screen.fill((0, 0, 0))
     all_sprites.draw(screen)
     group_sprites.draw(screen)
